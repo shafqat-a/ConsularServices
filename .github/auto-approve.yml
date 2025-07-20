@@ -1,0 +1,53 @@
+# Auto-approval configuration for ConsularServices repository
+# This file controls the behavior of the auto-approval GitHub Actions workflow
+
+# Enable or disable auto-approval globally
+enabled: true
+
+# Auto-approve PRs from these actors
+trusted_actors:
+  - "dependabot[bot]"
+  - "github-actions[bot]"
+
+# Auto-approve PRs with these labels
+auto_approve_labels:
+  - "auto-approve"
+  - "dependencies"
+  - "safe-changes"
+
+# File size limits (in bytes)
+# PRs with files larger than this will not be auto-approved
+max_file_size: 1048576  # 1MB
+
+# Paths that are considered safe for auto-approval
+safe_paths:
+  - "docs/**"
+  - "*.md"
+  - ".github/**"
+  - "package.json"
+  - "package-lock.json"
+  - "requirements.txt"
+  - "*.yml"
+  - "*.yaml"
+
+# Paths that should never be auto-approved
+restricted_paths:
+  - "src/security/**"
+  - "config/production/**"
+  - ".env*"
+  - "secrets/**"
+
+# Additional safety checks
+safety_checks:
+  # Don't auto-approve if PR modifies more than this many files
+  max_files_changed: 10
+  
+  # Don't auto-approve if PR has more than this many lines changed
+  max_lines_changed: 500
+  
+  # Require at least one approval from a human for these file types
+  require_human_review:
+    - "*.sql"
+    - "*.sh"
+    - "Dockerfile"
+    - "docker-compose.yml"
