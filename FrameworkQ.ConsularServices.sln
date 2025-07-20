@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkQ.ConsularServices", "FrameworkQ.ConsularServices\FrameworkQ.ConsularServices.csproj", "{1B027FF1-DBB6-4278-9E49-0C1AB2F086B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkQ.ConsularServices.Web", "FrameworkQ.ConsularServices.Web\FrameworkQ.ConsularServices.Web.csproj", "{6D6BABFA-7DD3-49BF-A074-24326FF90752}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B027FF1-DBB6-4278-9E49-0C1AB2F086B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B027FF1-DBB6-4278-9E49-0C1AB2F086B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B027FF1-DBB6-4278-9E49-0C1AB2F086B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B027FF1-DBB6-4278-9E49-0C1AB2F086B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

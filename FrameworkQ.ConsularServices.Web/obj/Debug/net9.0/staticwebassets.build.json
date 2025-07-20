@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "lREJs3Cb8vTiCBDjoXo8nTVUuIYHU1W7nX5IguNKYPc=",
+  "Source": "FrameworkQ.ConsularServices.Web",
+  "BasePath": "_content/FrameworkQ.ConsularServices.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

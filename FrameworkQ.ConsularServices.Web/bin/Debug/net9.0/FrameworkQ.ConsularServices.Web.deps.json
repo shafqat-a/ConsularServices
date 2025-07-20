@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "FrameworkQ.ConsularServices.Web/1.0.0": {
+        "runtime": {
+          "FrameworkQ.ConsularServices.Web.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FrameworkQ.ConsularServices.Web/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

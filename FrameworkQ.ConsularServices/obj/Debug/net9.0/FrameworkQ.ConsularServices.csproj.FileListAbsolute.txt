@@ -1,0 +1,12 @@
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\bin\Debug\net9.0\FrameworkQ.ConsularServices.deps.json
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\bin\Debug\net9.0\FrameworkQ.ConsularServices.dll
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\bin\Debug\net9.0\FrameworkQ.ConsularServices.pdb
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.csproj.AssemblyReference.cache
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.AssemblyInfoInputs.cache
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.AssemblyInfo.cs
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.csproj.CoreCompileInputs.cache
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.dll
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\refint\FrameworkQ.ConsularServices.dll
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\FrameworkQ.ConsularServices.pdb
+C:\Users\shafqat\git\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\FrameworkQ.ConsularServices\obj\Debug\net9.0\ref\FrameworkQ.ConsularServices.dll

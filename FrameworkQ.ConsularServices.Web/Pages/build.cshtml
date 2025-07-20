@@ -1,0 +1,34 @@
+﻿@page
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div style="text-align: center;">
+  <h1 class="display-4">Build the application</h1>
+  <p>This is the main  build page of the application</p>
+</div>
+<div id="surveyContainer"></div>
+
+<script>
+  // Define your survey JSON
+  var surveyJSON = {
+    title: "Product Feedback",
+    elements: [
+      { type: "text", name: "productName", title: "What is the product name?" },
+      { type: "rating", name: "satisfaction", title: "How satisfied are you?", isRequired: true },
+      { type: "comment", name: "feedback", title: "Additional feedback:" }
+    ]
+  };
+
+  // Create and render the survey using jQuery
+  $(document).ready(function () {
+    var survey = new Survey.Model(surveyJSON);
+
+    survey.onComplete.add(function (sender) {
+      alert("Results: " + JSON.stringify(sender.data));
+      // You can also post the data to a server using $.post or fetch
+    });
+
+    survey.render(document.getElementById("surveyContainer"));
+  });
+</script>
