@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "coreclr",
+      "request": "launch",
+      "name": "Launch FrameworkQ.ConsularServices.Web",
+      "program": "${workspaceFolder}/FrameworkQ.ConsularServices.Web/bin/Debug/net9.0/${input:webExecutable}",
+      "args": [],
+      "cwd": "${workspaceFolder}/FrameworkQ.ConsularServices.Web",
+      "stopAtEntry": false,
+      "preLaunchTask": "build"
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "webExecutable",
+      "description": "Enter the name of the executable to launch (e.g., FrameworkQ.ConsularServices.Web.dll)"
+    }
+  ]
+}
