@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FrameworkQ.ConsularServices")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+433bb5627cdd44822a20d0b8def096680dd7fdb0")]
 [assembly: System.Reflection.AssemblyProductAttribute("FrameworkQ.ConsularServices")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FrameworkQ.ConsularServices")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

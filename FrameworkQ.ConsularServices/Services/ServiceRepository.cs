@@ -7,7 +7,7 @@ using Dapper;
 
 namespace FrameworkQ.ConsularServices.Services
 {
-    public class ServiceRepository
+    public class ServiceRepository : IServiceRepository
     {
         private readonly string _connectionString;
 

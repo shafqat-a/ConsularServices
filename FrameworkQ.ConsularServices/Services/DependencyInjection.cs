@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FrameworkQ.ConsularServices.Users;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FrameworkQ.ConsularServices.Services
 {
@@ -6,9 +7,19 @@ namespace FrameworkQ.ConsularServices.Services
     {
         public static IServiceCollection AddConsularServices(this IServiceCollection services)
         {
+           
+            
+            services.AddTransient<Queue>();
+            services.AddTransient<ServiceInfo>();
+            services.AddTransient<Token>();
+            services.AddTransient<User>();
+            services.AddTransient<Role>();
+            services.AddTransient<Permission>();
+                
             // Register repositories
-            services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+                
 
             // Register the service manager
             services.AddScoped<ServiceManager>();

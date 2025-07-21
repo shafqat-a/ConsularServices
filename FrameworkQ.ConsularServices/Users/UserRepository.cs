@@ -21,238 +21,261 @@ public class UserRepository : IUserRepository
         _connectionString = configuration.GetConnectionString("DefaultConnection");
     }
 
-    // Role CRUD
-    public void CreateRole(Role role)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        conn.Execute("INSERT INTO Roles (Name) VALUES (@Name)", role);
-    }
-    
-    public User GetUserByEmail(string email)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        // This query assumes the 'Username' column in the database stores the user's email.
-        // It also aliases the database columns to match the 'User' class property names for Dapper's mapping.
-        const string sql = @"
-            SELECT 
-                UserId , 
-                Name, 
-                PasswordHash 
-            FROM Users 
-            WHERE Email = @Email";
-            
-        return conn.QueryFirstOrDefault<User>(sql, new { Email = email });
-    }
+   // ---------- Role CRUD ----------
+public void CreateRole(Role role)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    conn.Execute("INSERT INTO role (role_name) VALUES (@RoleName)", role);
+}
 
-    public Role GetRole(int id)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        return conn.QueryFirstOrDefault<Role>("SELECT Id, Name FROM Roles WHERE Id = @Id", new { Id = id });
-    }
+public Role GetRole(int id)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    return conn.QueryFirstOrDefault<Role>(
+        "SELECT role_id AS RoleID, role_name AS RoleName FROM role WHERE role_id = @Id",
+        new { Id = id });
+}
 
-    public void UpdateRole(Role role)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        conn.Execute("UPDATE Roles SET Name = @Name WHERE Id = @Id", role);
-    }
+public void UpdateRole(Role role)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    conn.Execute("UPDATE role SET role_name = @RoleName WHERE role_id = @RoleID", role);
+}
 
-    public void DeleteRole(int id)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("DELETE FROM Roles WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Id", id);
-        cmd.ExecuteNonQuery();
-    }
+public void DeleteRole(int id)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand("DELETE FROM role WHERE role_id = @Id", conn);
+    cmd.Parameters.AddWithValue("@Id", id);
+    cmd.ExecuteNonQuery();
+}
 
-    // Permission CRUD
-    public void CreatePermission(Permission permission)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("INSERT INTO Permissions (Name) VALUES (@Name)", conn);
-        cmd.Parameters.AddWithValue("@Name", permission.PermissionName);
-        cmd.ExecuteNonQuery();
-    }
+// ---------- Permission CRUD ----------
+public void CreatePermission(Permission permission)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand("INSERT INTO permission (permission_name) VALUES (@PermissionName)", conn);
+    cmd.Parameters.AddWithValue("@PermissionName", permission.PermissionName);
+    cmd.ExecuteNonQuery();
+}
 
-    public Permission GetPermission(int id)
+public Permission GetPermission(int id)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand(
+        "SELECT permission_id AS PermissionID, permission_name AS PermissionName FROM permission WHERE permission_id = @Id", conn);
+    cmd.Parameters.AddWithValue("@Id", id);
+    using var reader = cmd.ExecuteReader();
+    if (reader.Read())
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("SELECT Id, Name FROM Permissions WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Id", id);
-        using var reader = cmd.ExecuteReader();
-        if (reader.Read())
+        return new Permission
         {
-            return new Permission { PermissionID = reader.GetInt32(0), PermissionName = reader.GetString(1) };
-        }
-        return null;
+            PermissionID = reader.GetInt32(0),
+            PermissionName = reader.GetString(1)
+        };
     }
+    return null;
+}
 
-    public void UpdatePermission(Permission permission)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("UPDATE Permissions SET Name = @Name WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Name", permission.PermissionName);
-        cmd.Parameters.AddWithValue("@Id", permission.PermissionID);
-        cmd.ExecuteNonQuery();
-    }
+public void UpdatePermission(Permission permission)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand("UPDATE permission SET permission_name = @PermissionName WHERE permission_id = @PermissionID", conn);
+    cmd.Parameters.AddWithValue("@PermissionName", permission.PermissionName);
+    cmd.Parameters.AddWithValue("@PermissionID", permission.PermissionID);
+    cmd.ExecuteNonQuery();
+}
 
-    public void DeletePermission(int id)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("DELETE FROM Permissions WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Id", id);
-        cmd.ExecuteNonQuery();
-    }
+public void DeletePermission(int id)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand("DELETE FROM permission WHERE permission_id = @Id", conn);
+    cmd.Parameters.AddWithValue("@Id", id);
+    cmd.ExecuteNonQuery();
+}
 
-    // User CRUD
-    public void CreateUser(User user)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("INSERT INTO Users (Username, Password) VALUES (@Username, @Password)", conn);
-        cmd.Parameters.AddWithValue("@Username", user.Name);
-        cmd.Parameters.AddWithValue("@Password", user.PasswordHash);
-        cmd.ExecuteNonQuery();
-    }
+// ---------- User CRUD ----------
+public void CreateUser(User user)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand(
+        "INSERT INTO \"user\" (name, email, password_hash) VALUES (@Name, @Email, @PasswordHash)", conn);
+    cmd.Parameters.AddWithValue("@Name", user.Name);
+    cmd.Parameters.AddWithValue("@Email", user.Email);
+    cmd.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
+    cmd.ExecuteNonQuery();
+}
 
-    public User GetUser(int id)
+public User GetUser(int id)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand(
+        "SELECT user_id AS UserId, name AS Name, email AS Email, password_hash AS PasswordHash FROM \"user\" WHERE user_id = @Id", conn);
+    cmd.Parameters.AddWithValue("@Id", id);
+    using var reader = cmd.ExecuteReader();
+    if (reader.Read())
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("SELECT Id, Username, Password FROM Users WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Id", id);
-        using var reader = cmd.ExecuteReader();
-        if (reader.Read())
+        return new User
         {
-            return new User { UserId = reader.GetInt32(0), Name = reader.GetString(1), PasswordHash = reader.GetString(2) };
-        }
-        return null;
+            UserId = reader.GetInt32(0),
+            Name = reader.GetString(1),
+            Email = reader.GetString(2),
+            PasswordHash = reader.GetString(3)
+        };
     }
+    return null;
+}
 
-    public void UpdateUser(User user)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("UPDATE Users SET Username = @Username, Password = @Password WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Username", user.Name);
-        cmd.Parameters.AddWithValue("@Password", user.PasswordHash);
-        cmd.Parameters.AddWithValue("@Id", user.UserId);
-        cmd.ExecuteNonQuery();
-    }
+public User GetUserByEmail(string email)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    const string sql = @"
+        SELECT user_id   ,
+               name      AS Name,
+               password_hash AS PasswordHash
+        FROM   ""user""
+        WHERE  email = @Email";
+    return conn.QueryFirstOrDefault<User>(sql, new { Email = email });
+}
 
-    public void DeleteUser(int id)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var cmd = new NpgsqlCommand("DELETE FROM Users WHERE Id = @Id", conn);
-        cmd.Parameters.AddWithValue("@Id", id);
-        cmd.ExecuteNonQuery();
-    }
+public void UpdateUser(User user)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand(
+        "UPDATE \"user\" SET name = @Name, email = @Email, password_hash = @PasswordHash WHERE user_id = @UserId", conn);
+    cmd.Parameters.AddWithValue("@Name", user.Name);
+    cmd.Parameters.AddWithValue("@Email", user.Email);
+    cmd.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
+    cmd.Parameters.AddWithValue("@UserId", user.UserId);
+    cmd.ExecuteNonQuery();
+}
 
-    // Role-Permission/User mapping methods
-    public void AssignPermissionsToRole(int roleId, IEnumerable<int> permissionIds)
-    {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var tran = conn.BeginTransaction();
-        conn.Execute("DELETE FROM RolePermissionMap WHERE RoleId = @RoleId", new { RoleId = roleId }, tran);
-        foreach (var pid in permissionIds)
-        {
-            conn.Execute("INSERT INTO RolePermissionMap (RoleId, PermissionId) VALUES (@RoleId, @PermissionId)", new { RoleId = roleId, PermissionId = pid }, tran);
-        }
-        tran.Commit();
-    }
+public void DeleteUser(int id)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var cmd = new NpgsqlCommand("DELETE FROM \"user\" WHERE user_id = @Id", conn);
+    cmd.Parameters.AddWithValue("@Id", id);
+    cmd.ExecuteNonQuery();
+}
 
-    public void AssignUsersToRole(int roleId, IEnumerable<int> userIds)
+// ---------- Role-Permission / User mapping methods ----------
+public void AssignPermissionsToRole(int roleId, IEnumerable<int> permissionIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var tran = conn.BeginTransaction();
+    conn.Execute("DELETE FROM role_permission_map WHERE role_id = @RoleId", new { RoleId = roleId }, tran);
+    foreach (var pid in permissionIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var tran = conn.BeginTransaction();
-        conn.Execute("DELETE FROM RoleUserMap WHERE RoleId = @RoleId", new { RoleId = roleId }, tran);
-        foreach (var uid in userIds)
-        {
-            conn.Execute("INSERT INTO RoleUserMap (RoleId, UserId) VALUES (@RoleId, @UserId)", new { RoleId = roleId, UserId = uid }, tran);
-        }
-        tran.Commit();
+        conn.Execute("INSERT INTO role_permission_map (role_id, permission_id) VALUES (@RoleId, @PermissionId)",
+                     new { RoleId = roleId, PermissionId = pid }, tran);
     }
+    tran.Commit();
+}
 
-    public void AssignRolesToUser(int userId, IEnumerable<int> roleIds)
+public void AssignUsersToRole(int roleId, IEnumerable<int> userIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var tran = conn.BeginTransaction();
+    conn.Execute("DELETE FROM role_user_map WHERE role_id = @RoleId", new { RoleId = roleId }, tran);
+    foreach (var uid in userIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        using var tran = conn.BeginTransaction();
-        conn.Execute("DELETE FROM RoleUserMap WHERE UserId = @UserId", new { UserId = userId }, tran);
-        foreach (var rid in roleIds)
-        {
-            conn.Execute("INSERT INTO RoleUserMap (RoleId, UserId) VALUES (@RoleId, @UserId)", new { RoleId = rid, UserId = userId }, tran);
-        }
-        tran.Commit();
+        conn.Execute("INSERT INTO role_user_map (role_id, user_id) VALUES (@RoleId, @UserId)",
+                     new { RoleId = roleId, UserId = uid }, tran);
     }
+    tran.Commit();
+}
 
-    public void AddPermissionsToRole(int roleId, IEnumerable<int> permissionIds)
+public void AssignRolesToUser(int userId, IEnumerable<int> roleIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    using var tran = conn.BeginTransaction();
+    conn.Execute("DELETE FROM role_user_map WHERE user_id = @UserId", new { UserId = userId }, tran);
+    foreach (var rid in roleIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        foreach (var pid in permissionIds)
-        {
-            conn.Execute("INSERT INTO RolePermissionMap (RoleId, PermissionId) VALUES (@RoleId, @PermissionId) ON CONFLICT DO NOTHING", new { RoleId = roleId, PermissionId = pid });
-        }
+        conn.Execute("INSERT INTO role_user_map (role_id, user_id) VALUES (@RoleId, @UserId)",
+                     new { RoleId = rid, UserId = userId }, tran);
     }
+    tran.Commit();
+}
 
-    public void RemovePermissionsFromRole(int roleId, IEnumerable<int> permissionIds)
+public void AddPermissionsToRole(int roleId, IEnumerable<int> permissionIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    foreach (var pid in permissionIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        foreach (var pid in permissionIds)
-        {
-            conn.Execute("DELETE FROM RolePermissionMap WHERE RoleId = @RoleId AND PermissionId = @PermissionId", new { RoleId = roleId, PermissionId = pid });
-        }
+        conn.Execute("INSERT INTO role_permission_map (role_id, permission_id) VALUES (@RoleId, @PermissionId) ON CONFLICT DO NOTHING",
+                     new { RoleId = roleId, PermissionId = pid });
     }
+}
 
-    public void AddUsersToRole(int roleId, IEnumerable<int> userIds)
+public void RemovePermissionsFromRole(int roleId, IEnumerable<int> permissionIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    foreach (var pid in permissionIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        foreach (var uid in userIds)
-        {
-            conn.Execute("INSERT INTO RoleUserMap (RoleId, UserId) VALUES (@RoleId, @UserId) ON CONFLICT DO NOTHING", new { RoleId = roleId, UserId = uid });
-        }
+        conn.Execute("DELETE FROM role_permission_map WHERE role_id = @RoleId AND permission_id = @PermissionId",
+                     new { RoleId = roleId, PermissionId = pid });
     }
+}
 
-    public void RemoveUsersFromRole(int roleId, IEnumerable<int> userIds)
+public void AddUsersToRole(int roleId, IEnumerable<int> userIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    foreach (var uid in userIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        foreach (var uid in userIds)
-        {
-            conn.Execute("DELETE FROM RoleUserMap WHERE RoleId = @RoleId AND UserId = @UserId", new { RoleId = roleId, UserId = uid });
-        }
+        conn.Execute("INSERT INTO role_user_map (role_id, user_id) VALUES (@RoleId, @UserId) ON CONFLICT DO NOTHING",
+                     new { RoleId = roleId, UserId = uid });
     }
+}
 
-    public void AddRolesToUser(int userId, IEnumerable<int> roleIds)
+public void RemoveUsersFromRole(int roleId, IEnumerable<int> userIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    foreach (var uid in userIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        foreach (var rid in roleIds)
-        {
-            conn.Execute("INSERT INTO RoleUserMap (RoleId, UserId) VALUES (@RoleId, @UserId) ON CONFLICT DO NOTHING", new { RoleId = rid, UserId = userId });
-        }
+        conn.Execute("DELETE FROM role_user_map WHERE role_id = @RoleId AND user_id = @UserId",
+                     new { RoleId = roleId, UserId = uid });
     }
+}
 
-    public void RemoveRolesFromUser(int userId, IEnumerable<int> roleIds)
+public void AddRolesToUser(int userId, IEnumerable<int> roleIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    foreach (var rid in roleIds)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
-        foreach (var rid in roleIds)
-        {
-            conn.Execute("DELETE FROM RoleUserMap WHERE RoleId = @RoleId AND UserId = @UserId", new { RoleId = rid, UserId = userId });
-        }
+        conn.Execute("INSERT INTO role_user_map (role_id, user_id) VALUES (@RoleId, @UserId) ON CONFLICT DO NOTHING",
+                     new { RoleId = rid, UserId = userId });
     }
+}
+
+public void RemoveRolesFromUser(int userId, IEnumerable<int> roleIds)
+{
+    using var conn = new NpgsqlConnection(_connectionString);
+    conn.Open();
+    foreach (var rid in roleIds)
+    {
+        conn.Execute("DELETE FROM role_user_map WHERE role_id = @RoleId AND user_id = @UserId",
+                     new { RoleId = rid, UserId = userId });
+    }
+}
 }

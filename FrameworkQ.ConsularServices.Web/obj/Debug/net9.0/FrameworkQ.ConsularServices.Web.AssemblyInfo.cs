@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FrameworkQ.ConsularServices.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e3817f4be5d9825e5e8ac21ee34641eec8e44230")]
 [assembly: System.Reflection.AssemblyProductAttribute("FrameworkQ.ConsularServices.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FrameworkQ.ConsularServices.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
