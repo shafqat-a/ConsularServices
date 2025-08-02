@@ -5,7 +5,7 @@
       "type": "coreclr",
       "request": "launch",
       "name": "Launch FrameworkQ.ConsularServices.Web",
-      "program": "${workspaceFolder}/FrameworkQ.ConsularServices.Web/bin/Debug/net9.0/${input:webExecutable}",
+      "program": "${workspaceFolder}/FrameworkQ.ConsularServices.Web/bin/Debug/net9.0/FrameworkQ.ConsularServices.Web.dll",
       "args": [],
       "cwd": "${workspaceFolder}/FrameworkQ.ConsularServices.Web",
       "stopAtEntry": false,

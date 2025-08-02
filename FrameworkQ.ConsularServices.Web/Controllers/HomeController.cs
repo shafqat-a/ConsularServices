@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using FrameworkQ.ConsularServices.Web.Api.Contracts;
+using System.Text;
 
 
 namespace FrameworkQ.ConsularServices.Web.Controllers
