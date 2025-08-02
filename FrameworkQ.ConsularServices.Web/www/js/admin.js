@@ -1,7 +1,14 @@
 $(document).ready(function (){
 
 
-
+    var actions = [
+        {
+            label: "Edit",
+            callback: function(rowItem) {
+                console.log(["Edit action triggered for item:", rowItem]);
+            }
+        }
+    ];
 
     (async () => {
         
@@ -9,11 +16,12 @@ $(document).ready(function (){
             url:      '/api/users',   // or whatever route you mapped the action to
             type:     'GET',
             contentType: 'application/json',
-            data:     {}
         })
             .done(function (result) {
                 
-                alert(JSON.stringify(result.data))
+               var columns = getColumnsFromObject(result[0]);
+               columns.byname['passwordHash'].hide = true;
+               jqCreateTable ("surveyContainer","user_table", result, columns, actions);
             })
             .fail(function (xhr) {
                 console.error(xhr.responseText);

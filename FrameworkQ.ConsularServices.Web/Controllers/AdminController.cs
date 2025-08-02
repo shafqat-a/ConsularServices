@@ -6,8 +6,8 @@ namespace FrameworkQ.ConsularServices.Web.Controllers;
 public class AdminController: Controller
 {
     
-    [HttpGet("/user")]
-    public IActionResult User()
+    [HttpGet("/users")]
+    public IActionResult Users()
     {
         return View();
     }
