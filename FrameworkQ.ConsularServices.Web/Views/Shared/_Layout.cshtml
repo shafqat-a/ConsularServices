@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Consular Services</title>
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; margin: 0; }
+        .main-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        header { 
+            margin-bottom: 2rem; 
+        }
+        header h1 { margin: 0; font-size: 1.5rem; }
+        footer { 
+            border-top: 1px solid #ddd; 
+            margin-top: 2rem; 
+            padding-top: 1rem; 
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Navigation styles */
+        .survey-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--sjs-general-backcolor, #fff);
+            border-bottom: 1px solid var(--sjs-border-default, #ddd);
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,0.04);
+            padding: 0.5rem 2rem;
+            min-height: 56px;
+        }
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .toolbar-logo {
+            font-size: 2rem;
+            margin-right: 0.75rem;
+        }
+        .toolbar-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--sjs-general-forecolor, #333);
+        }
+        .toolbar-center {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .toolbar-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: var(--sjs-primary-backcolor-light, #f3eaff);
+            color: var(--sjs-primary-backcolor, #673ab0);
+            border: none;
+            border-radius: var(--sjs-corner-radius, 4px);
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .toolbar-btn:hover {
+            background: var(--sjs-primary-backcolor, #673ab0);
+            color: var(--sjs-primary-forecolor, #fff);
+        }
+        .toolbar-btn-primary {
+            background: var(--sjs-primary-backcolor, #673ab0);
+            color: var(--sjs-primary-forecolor, #fff);
+        }
+        .toolbar-btn-primary:hover {
+            background: var(--sjs-primary-backcolor-dark, #45188e);
+        }
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="/js/lib/jquery-3.6.0.min.js"></script>
+
+    <!-- SurveyJS Core -->
+    <link href="/js/lib/survey-core.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="/js/lib/survey.core.min.js"></script>
+    <script type="text/javascript" src="/js/lib/survey-js-ui.min.js"></script>
+    <script type="text/javascript" src="/js/lib/plain-light.js"></script>
+  
+
+</head>
+
+
+<header>
+    <nav class="survey-toolbar">
+        <div class="toolbar-left">
+            <span class="toolbar-logo">&#128221;</span>
+            <span class="toolbar-title">Consular Services Portal</span>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="toolbar-center">
+                <a href="/dashboard" class="toolbar-btn">Dashboard</a>
+                <a href="/services" class="toolbar-btn">Services</a>
+                <a href="/queue" class="toolbar-btn">Queue</a>
+                <a href="/users" class="toolbar-btn">Users</a>
+            </div>
+            <div class="toolbar-right">
+                <form method="post" action="/logout">
+                    <button type="submit" class="toolbar-btn toolbar-btn-primary">Logout</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="toolbar-center"></div>
+            <div class="toolbar-right">
+                <a href="/login" class="toolbar-btn toolbar-btn-primary">Login</a>
+            </div>
+        }
+    </nav>
+</header>
+
+<div class="main-container">
+    <main role="main">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="main-container">
+    &copy; 2024 - FrameworkQ Consular Services
+    </footer>

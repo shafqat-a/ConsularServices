@@ -1,4 +1,6 @@
-﻿namespace FrameworkQ.ConsularServices.Users;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FrameworkQ.ConsularServices.Users;
 
 public class RoleUserMap
 {

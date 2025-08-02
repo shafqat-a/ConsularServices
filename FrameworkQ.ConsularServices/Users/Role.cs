@@ -1,9 +1,11 @@
-﻿namespace FrameworkQ.ConsularServices.Users;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FrameworkQ.ConsularServices.Users;
 
 public class Role
 {
     [Column("role_id")]
-    public int RoleID { get; set; }
+    public long RoleID { get; set; }
 
     [Column("role_name")]
     public string RoleName { get; set; }

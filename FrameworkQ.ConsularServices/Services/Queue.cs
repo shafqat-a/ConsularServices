@@ -1,9 +1,11 @@
-﻿namespace FrameworkQ.ConsularServices.Services;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FrameworkQ.ConsularServices.Services;
 
 public class Queue
 {
     [Column("queue_id")]
-    public int QueueId { get; set; }
+    public long QueueId { get; set; }
 
     [Column("queue_name")]
     public string QueueName { get; set; }

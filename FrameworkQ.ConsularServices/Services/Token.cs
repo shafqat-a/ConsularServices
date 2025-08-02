@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services;
 
@@ -19,12 +20,6 @@ public class Token
     [Column("description")]
     public string Description { get; set; }
 
-    [Column("comment")]
-    public string Comment { get; set; }
-
-    [Column("attachments_received")]
-    public string[] AttachmentsRecieved { get; set; }
-
     [Column("mobile_no")]
     public string MobileNo { get; set; }
 
@@ -32,5 +27,12 @@ public class Token
     public string Email { get; set; }
 
     [Column("service_type")]
-    public int ServiceType { get; set; }
+    public long[] ServiceType { get; set; }
+    
+    [Column("passport_no")]
+    public string PassportNo { get; set; }
+    
+    [Column("nid_no")]
+    public string NationalIdNo { get; set; }
+
 }

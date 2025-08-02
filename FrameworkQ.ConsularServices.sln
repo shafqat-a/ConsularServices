@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkQ.ConsularServices
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkQ.ConsularServices.Web", "FrameworkQ.ConsularServices.Web\FrameworkQ.ConsularServices.Web.csproj", "{6D6BABFA-7DD3-49BF-A074-24326FF90752}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkQ.Consular.Test", "FrameworkQ.Consular.Test\FrameworkQ.Consular.Test.csproj", "{A5DCA7CE-60EF-45C5-BC64-741325D4138E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D6BABFA-7DD3-49BF-A074-24326FF90752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5DCA7CE-60EF-45C5-BC64-741325D4138E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5DCA7CE-60EF-45C5-BC64-741325D4138E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5DCA7CE-60EF-45C5-BC64-741325D4138E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5DCA7CE-60EF-45C5-BC64-741325D4138E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

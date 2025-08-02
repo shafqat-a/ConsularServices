@@ -1,10 +1,12 @@
-﻿namespace FrameworkQ.ConsularServices.Services;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FrameworkQ.ConsularServices.Services;
 
 
 public class ServiceInfo
 {
     [Column("service_id")]
-    public int ServiceId { get; set; }
+    public long ServiceId { get; set; }
 
     [Column("service_name")]
     public string ServiceName { get; set; }

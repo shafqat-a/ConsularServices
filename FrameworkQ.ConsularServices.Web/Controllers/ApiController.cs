@@ -2,11 +2,13 @@
 using System.Security.Claims;
 using System.Text;
 using FrameworkQ.ConsularServices.Web.Api.Contracts;
-using Microsoft.AspNetCore.Http.HttpResults;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using FrameworkQ.ConsularServices;
+
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace FrameworkQ.ConsularServices.Web.Controllers;
 
@@ -14,11 +16,11 @@ namespace FrameworkQ.ConsularServices.Web.Controllers;
 [Route("[controller]")]
 public class ApiController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IServiceManager _serviceManager;
     
-    public ApiController(IUserRepository userRepository)
+    public ApiController(IServiceManager serviceManager)
     {
-        _userRepository = userRepository;
+        _serviceManager = serviceManager;
     }
 
     // This action will respond to GET requests at /api/SampleData/greeting
@@ -34,37 +36,20 @@ public class ApiController : ControllerBase
         return Ok(data); // Returns a 200 OK response with the JSON data
     }
 
-    private string Hash256SHA(string inputstring)
-    {
-        using (var sha256 = System.Security.Cryptography.SHA256.Create())
-        {
-            // Convert the input string to a byte array and compute the hash
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(inputstring);
-            byte[] hash = sha256.ComputeHash(bytes);
-
-            // Convert byte array to a string
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                stringBuilder.Append(hash[i].ToString("x2"));
-            }
-
-            return stringBuilder.ToString();
-        }
-    }
+    
     
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request,
+    public async Task<IActionResult> Login([FromBody] LoginRequest request,
         [FromServices] IOptions<JwtOptions> jwtOpts)
     {
         // 1. Get user by email from database
-        var user = _userRepository.GetUserByEmail(request.Email);
+        var user = _serviceManager.GetUserByEmail(request.Email);
         if (user == null)
             return Unauthorized(new { Message = "Invalid username or password." });
 
         // 2. Hash the provided password and compare with stored hash
         var hashedPassword = request.PasswordHash;
-        if (user.PasswordHash != hashedPassword)
+        if (user.PasswordHash.ToUpper() != hashedPassword.ToUpper())
             return Unauthorized(new { Message = "Invalid username or password." });
 
         // 3. Create claims
@@ -75,6 +60,9 @@ public class ApiController : ControllerBase
             new Claim(ClaimTypes.Name, request.Email)
             // add roles, etc. here
         };
+
+        //var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
         // 4. Read options from DI
         var opts = jwtOpts.Value;
@@ -90,11 +78,31 @@ public class ApiController : ControllerBase
             signingCredentials: creds
         );
 
-        // 5. Return token
-        return Ok(new
+                // 5. Write token to cookie instead of returning it
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+        HttpContext.Response.Cookies.Append("jwt", tokenString, new CookieOptions
         {
-            Message = "Login successful!",
-            Token   = new JwtSecurityTokenHandler().WriteToken(token)
+            HttpOnly = true,             // Prevent access from JavaScript
+            Secure = true,               // Use true in production with HTTPS
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTimeOffset.UtcNow.AddHours(2)
         });
+
+        return Ok(new { Message = "Login successful!" });
+
+        // // 5. Return token
+        // return Ok(new
+        // {
+        //     Message = "Login successful!",
+        //     Token = new JwtSecurityTokenHandler().WriteToken(token)
+        // });
+    }
+
+    [HttpGet("users")]
+    public IActionResult GetUsers()
+    {
+        var users = _serviceManager.GetUsers();
+        return Ok(users);
     }
 }

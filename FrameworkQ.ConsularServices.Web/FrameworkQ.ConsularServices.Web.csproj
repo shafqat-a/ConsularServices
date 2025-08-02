@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Pages\Reports\" />
+      <Folder Include="Pages\Station\" />
       <Folder Include="www\images\" />
     </ItemGroup>
 
