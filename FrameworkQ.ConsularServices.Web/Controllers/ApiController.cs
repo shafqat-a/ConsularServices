@@ -17,7 +17,7 @@ namespace FrameworkQ.ConsularServices.Web.Controllers;
 public class ApiController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
-    
+
     public ApiController(IServiceManager serviceManager)
     {
         _serviceManager = serviceManager;
@@ -36,8 +36,8 @@ public class ApiController : ControllerBase
         return Ok(data); // Returns a 200 OK response with the JSON data
     }
 
-    
-    
+
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request,
         [FromServices] IOptions<JwtOptions> jwtOpts)
@@ -67,18 +67,18 @@ public class ApiController : ControllerBase
         // 4. Read options from DI
         var opts = jwtOpts.Value;
 
-        var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(opts.Key));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(opts.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer:  opts.Issuer,
-            audience:opts.Audience,
-            claims:   claims,
-            expires:  DateTime.UtcNow.AddHours(1),
+            issuer: opts.Issuer,
+            audience: opts.Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: creds
         );
 
-                // 5. Write token to cookie instead of returning it
+        // 5. Write token to cookie instead of returning it
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
         HttpContext.Response.Cookies.Append("jwt", tokenString, new CookieOptions
@@ -104,5 +104,28 @@ public class ApiController : ControllerBase
     {
         var users = _serviceManager.GetUsers();
         return Ok(users);
+    }
+
+    [HttpGet("user")]
+    public IActionResult GetUser([FromQuery] string user_id)
+    {
+        var userid = long.Parse(user_id);
+        var user = _serviceManager.GetUserById(userid);
+        return Ok(user);
+    }
+
+    [HttpGet("stations")]
+    public IActionResult GetStations()
+    {
+        var stations = _serviceManager.GetStations();
+        return Ok(stations);
+    }
+    
+    [HttpGet("station")]
+    public IActionResult GetStation([FromQuery] string station_id)
+    {
+        var stationId = long.Parse(station_id);
+        var station = _serviceManager.GetStation(stationId);
+        return Ok(station);
     }
 }

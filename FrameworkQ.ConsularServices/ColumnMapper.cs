@@ -87,7 +87,7 @@ public class ColumnMapper<T> : EntityMap<T> where T : class
                 cfg.AddMap(new ColumnMapper<RoleUserMap>());
                 cfg.AddMap(new ColumnMapper<ServiceInfo>());
                 cfg.AddMap(new ColumnMapper<ServiceInstance>());
-                cfg.AddMap(new ColumnMapper<Queue>());
+                cfg.AddMap(new ColumnMapper<Station>());
                 cfg.AddMap(new ColumnMapper<Token>());
                 _isInitialized = true;
             });

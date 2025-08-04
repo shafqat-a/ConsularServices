@@ -11,7 +11,7 @@ namespace FrameworkQ.ConsularServices.Web
         {
            
             
-            services.AddTransient<Queue>();
+            services.AddTransient<Station>();
             services.AddTransient<ServiceInfo>();
             services.AddTransient<Token>();
             services.AddTransient<User>();

@@ -18,6 +18,9 @@ namespace FrameworkQ.ConsularServices.Services
         Token GetToken(string tokenId);
         void UpdateToken(Token token);
         void DeleteToken(string tokenId);
+
+        Station[] GetStations();
+        Station GetStation(long id);
     }
 
     public class ServiceRepository : IServiceRepository
@@ -149,6 +152,18 @@ namespace FrameworkQ.ConsularServices.Services
             conn.Execute("DELETE FROM token WHERE token_id = @TokenId", new { TokenId = tokenId });
         }
 
+        public Station[] GetStations()
+        {
+            const string sql = "SELECT * FROM public.queue;";
+            using var conn = new NpgsqlConnection(_connectionString);
+            return conn.Query<Station>(sql).ToArray();
+        }
+        public Station GetStation(long id)
+        {
+            const string sql = "SELECT * FROM public.queue WHERE queue_id = @id;";
+            using var conn = new NpgsqlConnection(_connectionString);
+            return conn.QueryFirstOrDefault<Station>(sql, new { id });
+        }
         
     }
 }

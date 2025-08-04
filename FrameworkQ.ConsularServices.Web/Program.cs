@@ -87,4 +87,4 @@ app.MapControllerRoute(
 app.MapControllers();
 ColumnMapper<User>.MapTypes();
 
-app.Run();
+app.Run(); 

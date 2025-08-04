@@ -3,12 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FrameworkQ.ConsularServices.Web.Controllers;
 
-public class AdminController: Controller
+public class AdminController : Controller
 {
-    
+
     [HttpGet("/users")]
     public IActionResult Users()
     {
+        return View();
+    }
+
+    [HttpGet("/stations")]
+    public IActionResult Stations()
+    {
+        return View();
+    }
+
+     [HttpGet("/station")]
+    public IActionResult Station()
+    {
+        return View();
+    }
+    
+    [HttpPost("/user")]
+    public IActionResult User ([FromForm(Name = "user_id")] string userId)
+    {
+        ViewBag.UserId = userId.ToString();
         return View();
     }
 }

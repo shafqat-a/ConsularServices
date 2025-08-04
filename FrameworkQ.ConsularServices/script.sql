@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS public.service_instance;
 DROP TABLE IF EXISTS public.role_permission_map;
 DROP TABLE IF EXISTS public.role_user_map;
+DROP TABLE IF EXISTS public.station_log;
 DROP TABLE IF EXISTS public.token;
-DROP TABLE IF EXISTS public.queue;
+DROP TABLE IF EXISTS public.station;
 DROP TABLE IF EXISTS public.service_info;
 DROP TABLE IF EXISTS public.permission;
 DROP TABLE IF EXISTS public.role;
@@ -57,12 +58,11 @@ ALTER TABLE IF EXISTS public.service_info
     OWNER to postgres;
  
 
-CREATE TABLE IF NOT EXISTS public.queue
+CREATE TABLE IF NOT EXISTS public.station
 (
-    queue_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL ,
-    queue_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    user_id integer NOT NULL,
-    queue_status integer NOT NULL
+    station_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL ,
+    station_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    status integer NOT NULL
     )
 
     TABLESPACE pg_default;
@@ -158,6 +158,22 @@ CREATE TABLE IF NOT EXISTS public.token
 ALTER TABLE IF EXISTS public.token
     OWNER to postgres;
 
+
+CREATE TABLE StationLog
+(
+    log_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
+    station_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    note text COLLATE pg_catalog."default"  NULL,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    start_time TIMESTAMP without time ZONE NULL,
+    end_time TIMESTAMP without time ZONE NULL
+)
+
+    TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.station_log
+    OWNER to postgres;  
 
 CREATE TABLE IF NOT EXISTS public.role_permission_map
 (
