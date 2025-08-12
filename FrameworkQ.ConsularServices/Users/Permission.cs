@@ -5,6 +5,7 @@ namespace FrameworkQ.ConsularServices.Users;
 
 public class Permission
 {
+    [System.ComponentModel.DataAnnotations.Key]
     [Column("permission_id")]
     public long PermissionID { get; set; }
 

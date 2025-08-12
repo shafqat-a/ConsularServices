@@ -60,7 +60,7 @@ builder.Services.AddSingleton(sp =>
 // If you're using a repository pattern with dependency injection
 
 DependencyInjection.AddConsularServices(builder.Services);
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // 2. Configure the app to use static files and routing

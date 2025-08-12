@@ -1,12 +1,6 @@
 @page
 @model FrameworkQ.ConsularServices.Web.Pages.SecuredPage
 
-@inject IHttpContextAccessor HttpContextAccessor
-@{
-    var pageModel = new FrameworkQ.ConsularServices.Web.Pages.SecuredPage(HttpContextAccessor);
-}
-@pageModel.GenerateItemPageHiddenIdString("user")
-
 <div id="surveyContainer" style="text-align: center;">
 </div>
 <script type="text/javascript" src="@FrameworkQ.ConsularServices.Web.Utils.MakeVersionable("/js/main.js")" ></script>

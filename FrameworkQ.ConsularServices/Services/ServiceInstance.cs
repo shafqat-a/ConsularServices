@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class ServiceInstance
 {
+    [System.ComponentModel.DataAnnotations.Key]
     [Column("service_instance_id")]
     public long ServiceInstanceId { get; set; }
     

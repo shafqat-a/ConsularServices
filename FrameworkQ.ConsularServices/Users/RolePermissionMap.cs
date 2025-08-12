@@ -4,6 +4,7 @@ namespace FrameworkQ.ConsularServices.Users;
 
 public class RolePermissionMap
 {
+    
     [Column("role_id")]
     public int RoleId { get; set; }
 

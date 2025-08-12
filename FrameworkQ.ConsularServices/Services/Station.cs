@@ -4,6 +4,7 @@ namespace FrameworkQ.ConsularServices.Services;
 
 public class Station
 {
+    [System.ComponentModel.DataAnnotations.Key]
     [Column("station_id")]
     public long QueueId { get; set; }
 

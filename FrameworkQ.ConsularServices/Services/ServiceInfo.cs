@@ -5,6 +5,7 @@ namespace FrameworkQ.ConsularServices.Services;
 
 public class ServiceInfo
 {
+    [System.ComponentModel.DataAnnotations.Key]
     [Column("service_id")]
     public long ServiceId { get; set; }
 

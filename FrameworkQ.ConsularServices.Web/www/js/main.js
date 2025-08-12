@@ -204,3 +204,123 @@ function buildModelForType(objectType) {
     }
     return obj
 }
+
+function camelCase(strdata) {
+  return strdata.toLowerCase().replace(/_([a-z])/g, function (match, letter) {
+    return letter.toUpperCase();
+  });
+}
+
+
+function buildItemTemplate (actionName) {
+
+    var templateString =  {
+            url: '/$action',
+            type: "item",
+            actions: {
+                init: {
+                    url: '/api/$action',
+                    type: 'GET',
+                    params: ["$action_id"],
+                    success : function (result, action, subActionName) {
+                        
+                        var model =buildModelForType("$action");
+                        var survey = new Survey.Model(model);
+                        survey.data = result;
+                        $("#surveyContainer").Survey({model: survey});
+                    },
+                    fail: function (xhr) {
+                        alert ("Failed to get $action:", xhr.responseText);
+                    },
+                    custom: null
+                },
+                root : {
+                },
+                item: [{
+                        label: "Save",
+                        callback: function(rowItem) {
+                            console.log("Saving $action:", rowItem.item);
+                            postAction("/api/$action", rowItem.item);
+                        }
+                    }]
+            }
+        };
+    return buildTemplate( actionName, templateString);
+
+}
+
+function buildListTemplate (actionName) {
+    
+    var templateString =  {
+        "$actions" : {
+            url: '/$actions',
+            type : 'list',
+            actions : {
+                init: {
+                    url: '/api/$actions',  
+                    type: 'GET',
+                    success : function (result, action, subActionName) {
+                        var columns = getColumnsFromObject(result[0]);
+                        jqCreateTable ("surveyContainer","$action_table", result, columns, action.actions.item);        
+                    },
+                    fail: function (xhr) {
+                        alert ("Failed to get $actions:", xhr.responseText);
+                    },
+                    custom: null
+
+                },
+                root : {
+                }, 
+                item: [{
+                        label: "Edit",
+                        callback: function(rowItem) {
+                            postAction("/$action" , {"$action_id" : rowItem.item[camelCase("$action_id")].toString()});
+                        }
+                    }]
+            }  
+        }
+    };
+
+    return buildTemplate( actionName, templateString);
+}
+
+function buildTemplate (actionName, templateString) {
+
+    // if actionName ends with "s" then remove the last character
+    if (actionName.endsWith("s")) {
+        actionName = actionName.slice(0, -1);
+    }
+
+    var actionTemplateString = stringifyWithFn(templateString);
+    // replace actionTemplateString all $action with actionName 
+    actionTemplateString = actionTemplateString.replace(/\$action/g, actionName);
+    actionInstance = parseWithFn(actionTemplateString);
+
+    console.log("Action instance for " + actionName + ":", actionInstance);
+    return actionInstance[actionName + "s"];
+
+}
+
+function stringifyWithFn(obj) {
+  return JSON.stringify(obj, function (key, value) {
+    if (typeof value === "function") {
+      return `__FUNC__${value.toString()}`; // Mark functions clearly
+    }
+    return value;
+  });
+}
+
+function parseWithFn(jsonStr) {
+  return JSON.parse(jsonStr, function (key, value) {
+    if (typeof value === "string" && value.startsWith("__FUNC__")) {
+      const funcStr = value.slice(8); // Remove the "__FUNC__" marker
+      try {
+        return new Function(`return (${funcStr})`)(); // Restore function
+      } catch (e) {
+        console.warn("Failed to restore function:", funcStr);
+        return value;
+      }
+    }
+    return value;
+  });
+}

@@ -4,6 +4,7 @@ namespace FrameworkQ.ConsularServices.Users;
 
 public class Role
 {
+    [System.ComponentModel.DataAnnotations.Key]
     [Column("role_id")]
     public long RoleID { get; set; }
 

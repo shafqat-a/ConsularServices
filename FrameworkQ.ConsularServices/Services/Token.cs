@@ -5,6 +5,7 @@ namespace FrameworkQ.ConsularServices.Services;
 
 public class Token
 {
+    [System.ComponentModel.DataAnnotations.Key]
     [Column("token_id")]
     public string TokenId { get; set; }
 

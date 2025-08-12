@@ -12,8 +12,11 @@ namespace FrameworkQ.ConsularServices.Services
     {
         ServiceInfo CreateServiceInfo(ServiceInfo service);
         ServiceInfo GetServiceInfo(long id);
+
+        
         void UpdateServiceInfo(ServiceInfo service);
         void DeleteServiceInfo(long id);
+        ServiceInfo[] ListServiceInfo();
         Token CreateToken(Token token);
         Token GetToken(string tokenId);
         void UpdateToken(Token token);
@@ -154,7 +157,7 @@ namespace FrameworkQ.ConsularServices.Services
 
         public Station[] GetStations()
         {
-            const string sql = "SELECT * FROM public.queue;";
+            const string sql = "SELECT * FROM public.station;";
             using var conn = new NpgsqlConnection(_connectionString);
             return conn.Query<Station>(sql).ToArray();
         }
@@ -163,6 +166,13 @@ namespace FrameworkQ.ConsularServices.Services
             const string sql = "SELECT * FROM public.queue WHERE queue_id = @id;";
             using var conn = new NpgsqlConnection(_connectionString);
             return conn.QueryFirstOrDefault<Station>(sql, new { id });
+        }
+
+        public ServiceInfo[] ListServiceInfo()
+        {
+            const string sql = "SELECT * FROM public.service_info;";
+            using var conn = new NpgsqlConnection(_connectionString);
+            return conn.Query<ServiceInfo>(sql).ToArray();
         }
         
     }

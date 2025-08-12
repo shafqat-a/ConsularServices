@@ -102,6 +102,8 @@ $(document).ready(function (){
                     }]
             }  
         },
+        services : buildListTemplate ("services"),
+        service: buildItemTemplate ("service")
         
     };
 

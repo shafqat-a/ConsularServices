@@ -11,6 +11,8 @@ public interface IServiceManager
 
     Station[] GetStations();
     Station GetStation(long station_id);
+
+    ServiceInfo[] ListServiceInfo();
 }
 public class ServiceManager : IServiceManager
 {
@@ -46,5 +48,10 @@ public class ServiceManager : IServiceManager
     public Station GetStation(long station_id)
     {
         return _serviceRepository.GetStation(station_id);
+    }
+
+    public ServiceInfo[] ListServiceInfo()
+    {
+        return _serviceRepository.ListServiceInfo();
     }
 }

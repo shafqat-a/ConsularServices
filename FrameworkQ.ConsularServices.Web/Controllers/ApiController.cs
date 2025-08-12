@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using FrameworkQ.ConsularServices.Services;
 
 namespace FrameworkQ.ConsularServices.Web.Controllers;
 
@@ -120,12 +121,25 @@ public class ApiController : ControllerBase
         var stations = _serviceManager.GetStations();
         return Ok(stations);
     }
-    
+
     [HttpGet("station")]
     public IActionResult GetStation([FromQuery] string station_id)
     {
         var stationId = long.Parse(station_id);
         var station = _serviceManager.GetStation(stationId);
         return Ok(station);
+    }
+
+    [HttpGet("services")]
+    public IActionResult ListServiceInfpp()
+    {
+        ServiceInfo[] infos = _serviceManager.ListServiceInfo();
+        return Ok(infos);
+    }
+    
+    public IActionResult GetSurveyJsConfigForItem (string itemtype)
+    {
+        throw new NotImplementedException("This method is not implemented yet.");
+        //return Ok(Utils.GenerateSurveyJsConfigForItem(itemtype));
     }
 }

@@ -18,16 +18,22 @@ public class AdminController : Controller
         return View();
     }
 
-     [HttpGet("/station")]
+    [HttpGet("/station")]
     public IActionResult Station()
     {
         return View();
     }
-    
+
     [HttpPost("/user")]
-    public IActionResult User ([FromForm(Name = "user_id")] string userId)
+    public IActionResult User([FromForm(Name = "user_id")] string userId)
     {
         ViewBag.UserId = userId.ToString();
         return View();
+    }
+    
+    [HttpGet("/services")]
+    public IActionResult Services()
+    {
+        return View("ListView");
     }
 }
