@@ -12,7 +12,8 @@ public interface IServiceManager
     Station[] GetStations();
     Station GetStation(long station_id);
 
-    ServiceInfo[] ListServiceInfo();
+    Service[] ListServiceInfo();
+    Service GetService(int serviceId);
 }
 public class ServiceManager : IServiceManager
 {
@@ -34,7 +35,7 @@ public class ServiceManager : IServiceManager
     {
         return _userRepository.GetUsers();
     }
-
+    
     public Station[] GetStations()
     {
         return _serviceRepository.GetStations();
@@ -50,8 +51,13 @@ public class ServiceManager : IServiceManager
         return _serviceRepository.GetStation(station_id);
     }
 
-    public ServiceInfo[] ListServiceInfo()
+    public Service[] ListServiceInfo()
     {
         return _serviceRepository.ListServiceInfo();
+    }
+
+    public Service GetService(int serviceId)
+    {
+        return _serviceRepository.GetServiceInfo(serviceId);
     }
 }

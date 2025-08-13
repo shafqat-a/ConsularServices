@@ -177,7 +177,7 @@ public class SeedDataEntryTest : IDisposable
         userRepository.AssignRolesToUser(userShafqat.UserId, new List<long> { roleUser.RoleID });
         
         var serviceRepository = _serviceProvider.GetRequiredService<IServiceRepository>();
-        var sinfo = serviceRepository.CreateServiceInfo(new ServiceInfo()
+        var sinfo = serviceRepository.CreateServiceInfo(new Service()
         {
             ServiceName = "New E-Passport - 120 pages",
             ServiceDescription = "Get a new e-passport of 120 pages",
@@ -185,7 +185,7 @@ public class SeedDataEntryTest : IDisposable
             ServiceFee = 60
         });
 
-        var sinfo2 = serviceRepository.CreateServiceInfo(new ServiceInfo()
+        var sinfo2 = serviceRepository.CreateServiceInfo(new Service()
         {
             ServiceName = "New E-Passport - 68 pages",
             ServiceDescription = "Get a new e-passport of 68 pages",
@@ -202,7 +202,11 @@ public class SeedDataEntryTest : IDisposable
             ServiceType = new []{sinfo.ServiceId}
         });
 
-
+        var station = serviceRepository.CreateStation(new Station()
+        {
+            StationName = "Station 1",
+            Status = 0
+        });
 
 
     }

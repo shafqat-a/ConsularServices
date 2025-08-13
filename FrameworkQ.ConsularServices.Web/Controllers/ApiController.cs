@@ -133,13 +133,25 @@ public class ApiController : ControllerBase
     [HttpGet("services")]
     public IActionResult ListServiceInfpp()
     {
-        ServiceInfo[] infos = _serviceManager.ListServiceInfo();
+        Service[] infos = _serviceManager.ListServiceInfo();
         return Ok(infos);
     }
     
-    public IActionResult GetSurveyJsConfigForItem (string itemtype)
+    [HttpGet("service")]
+    public IActionResult GetService([FromQuery] string service_id)
     {
-        throw new NotImplementedException("This method is not implemented yet.");
+        int serviceId = int.Parse(service_id);
+        Service service = _serviceManager.GetService(serviceId);
+        return Ok(service);
+    }
+    
+    [HttpGet("typeinfo")]
+    public IActionResult GetSurveyJsConfigForItem ([FromQuery] string itemtype)
+    {
+        Type? type = Utils.GetTypeFromName(itemtype);
+        return Ok(Utils.BuildSurveyJsConfig(type.AssemblyQualifiedName));
+        //throw new NotImplementedException("This method is not implemented yet.");
         //return Ok(Utils.GenerateSurveyJsConfigForItem(itemtype));
     }
+    
 }

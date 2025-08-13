@@ -12,7 +12,7 @@ namespace FrameworkQ.ConsularServices.Web
            
             
             services.AddTransient<Station>();
-            services.AddTransient<ServiceInfo>();
+            services.AddTransient<Service>();
             services.AddTransient<Token>();
             services.AddTransient<User>();
             services.AddTransient<Role>();

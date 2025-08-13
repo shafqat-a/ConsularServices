@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS public.station
 (
     station_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL ,
     station_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    status integer NOT NULL
+    queue_status integer NOT NULL
     )
 
     TABLESPACE pg_default;
@@ -159,7 +159,7 @@ ALTER TABLE IF EXISTS public.token
     OWNER to postgres;
 
 
-CREATE TABLE StationLog
+CREATE TABLE station_log
 (
     log_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     station_id BIGINT NOT NULL,

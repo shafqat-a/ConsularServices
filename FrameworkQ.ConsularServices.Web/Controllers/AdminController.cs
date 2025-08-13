@@ -18,7 +18,7 @@ public class AdminController : Controller
         return View();
     }
 
-    [HttpGet("/station")]
+    [HttpPost("/station")]
     public IActionResult Station()
     {
         return View();
@@ -35,5 +35,11 @@ public class AdminController : Controller
     public IActionResult Services()
     {
         return View("ListView");
+    }
+    
+    [HttpPost("/service")]
+    public IActionResult Service()
+    {
+        return View("ItemView");
     }
 }

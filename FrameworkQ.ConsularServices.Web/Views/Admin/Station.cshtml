@@ -1,6 +1,12 @@
 @page
 @model FrameworkQ.ConsularServices.Web.Pages.SecuredPage
-<input type="hidden" name="station_id" id="station_id" value="@ViewBag.StationId" />
+
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var pageModel = new FrameworkQ.ConsularServices.Web.Pages.SecuredPage(HttpContextAccessor);
+}
+
+@Html.Raw(pageModel.GenerateItemPageHiddenIdString("station"));
 <div id="surveyContainer" style="text-align: center;">
 </div>
 <script type="text/javascript" src="@FrameworkQ.ConsularServices.Web.Utils.MakeVersionable("/js/main.js")" ></script>

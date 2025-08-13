@@ -2,15 +2,16 @@
 
 namespace FrameworkQ.ConsularServices.Services;
 
+[ActionVerb( Verb = "station", PKs = new[] { "StationId" })]
 public class Station
 {
     [System.ComponentModel.DataAnnotations.Key]
     [Column("station_id")]
-    public long QueueId { get; set; }
+    public long StationId { get; set; }
 
     [Column("station_name")]
     public string StationName { get; set; }
 
-    [Column("status")]
+    [Column("queue_status")]
     public int Status { get; set; }
 }

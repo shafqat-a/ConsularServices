@@ -10,7 +10,7 @@ namespace FrameworkQ.ConsularServices.Web;
 public static class Utils
 {
 
-    private static readonly string _Version = "1.0.0"; // Example version, replace with actual version logic
+    private static readonly string _Version = "1.0.2"; // Example version, replace with actual version logic
     public static string MakeVersionable(string path)
     {
 
@@ -51,7 +51,7 @@ public static class Utils
         return sb.ToString();
     }
 
-    private static Type? GetTypeFromName(string typeName)
+    public static Type? GetTypeFromName(string typeName)
     {
         Type? typInput = null;
         string typenameToTry = "FrameworkQ.ConsularServices.Users." + UppercaseFirstLetterWord(typeName);

@@ -1,57 +1,53 @@
-﻿$(document).ready(function (){
-    
-    
+﻿
 
-})
+async function actionRunner(action, subActionName) {
+    console.log("Running with action:", action);
+    const subAction = action.actions[subActionName];
 
-async function actionRunner (action, subActionName){     
-    
-    console.log("Running with action:", action); 
-    var subAction = action.actions[subActionName];
     if (action.type === "list") {
         if (subAction.custom == null) {
-            $.ajax({
+            try {
+                const result = await $.ajax({
                     url: subAction.url,
                     type: subAction.type,
-                    contentType: 'application/json',
-                })
-                .done(function (result) {
-                    return subAction.success(result, action, subActionName);
-                })
-                .fail(function (xhr) {
-                    return subAction.fail(xhr, action, subActionName);
+                    contentType: "application/json"
                 });
+                return subAction.success(result, action, subActionName);
+            } catch (xhr) {
+                return subAction.fail(xhr, action, subActionName);
+            }
         } else {
             return subAction.custom(action, subActionName);
-        } 
-    } else if  (action.type == "item") {
-        alert ("item");
+        }
+
+    } else if (action.type === "item") {
+
         if (subAction.custom == null) {
-            var params = {};
-            subAction.params.forEach(element => {
-                params[element] = $("#" + element).val();
-            });
+            const params = {};
+            subAction.params.forEach(k => { params[k] = $("#" + k).val(); });
             console.log("Item params:", params);
-            var urlToCall = subAction.url;
+
+            let urlToCall = subAction.url;
             if (subAction.type === "GET") {
                 urlToCall += "?" + buildQueryString(params);
             }
-            $.ajax({
+
+            try {
+                const result = await $.ajax({
                     url: urlToCall,
                     type: subAction.type,
-                    contentType: 'application/json',
-                })
-                .done(function (result) {
-                    return subAction.success(result, action, subActionName);
-                })
-                .fail(function (xhr) {
-                    return subAction.fail(xhr, action, subActionName);
+                    contentType: "application/json"
                 });
+                console.log(["xxx", result, action, subActionName]);
+                return subAction.success(result, action, subActionName);
+            } catch (xhr) {
+                return subAction.fail(xhr, action, subActionName);
+            }
         } else {
             return subAction.custom(action, subActionName);
-        } 
+        }
     }
-};
+}
 
 function camelToProper(camelCaseStr) {
   if (!camelCaseStr) return "";
@@ -178,9 +174,9 @@ function objectToKeyValueArray(obj) {
   return Object.entries(obj).map(([key, value]) => ({ key, value }));
 }
 
-function buildModelForType(objectType) {
-    var obj = {
-    }
+async function buildModelForType(objectType) {
+    let obj = {};
+
     switch (objectType) {
         case "user":
             obj.title = "User";
@@ -189,21 +185,32 @@ function buildModelForType(objectType) {
                 { type: "text", name: "password", title: "Please enter your password", isRequired: true, inputType: "password" },
                 { type: "text", name: "userId", visible: false },
                 { type: "text", name: "passwordHash", visible: false },
-            ]; 
+            ];
             break;
-        // Add 
-        // more cases for other object types as needed
+
         case "station":
             obj.title = "Station";
             obj.elements = [
-                { type: "text", name: "queueId", title: "Station ID", isRequired: true },
-                { type: "text", name: "queueName", title: "Station Name", isRequired: true },
-                { type: "text", name: "queueStatus", title: "Status", isRequired: true },
+                { type: "text", name: "stationName", title: "Station Name", isRequired: true },
+                { type: "text", name: "Status", title: "Status", isRequired: true },
             ];
             break;
+
+        default: {
+            var objType = camelToProper(objectType)
+            const res = await fetch(`/api/typeinfo?itemtype=${encodeURIComponent(objType)}`, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (!res.ok) throw new Error(`Failed to fetch config for ${objectType}`);
+            obj = await res.json();
+            break;
+        }
     }
-    return obj
+
+    return obj;
 }
+
 
 function camelCase(strdata) {
   return strdata.toLowerCase().replace(/_([a-z])/g, function (match, letter) {
@@ -212,42 +219,41 @@ function camelCase(strdata) {
 }
 
 
-function buildItemTemplate (actionName) {
-
-    var templateString =  {
-            url: '/$action',
-            type: "item",
-            actions: {
-                init: {
-                    url: '/api/$action',
-                    type: 'GET',
-                    params: ["$action_id"],
-                    success : function (result, action, subActionName) {
-                        
-                        var model =buildModelForType("$action");
-                        var survey = new Survey.Model(model);
-                        survey.data = result;
-                        $("#surveyContainer").Survey({model: survey});
-                    },
-                    fail: function (xhr) {
-                        alert ("Failed to get $action:", xhr.responseText);
-                    },
-                    custom: null
+function buildItemTemplate(actionName) {
+    const templateString = {
+        url: "/$action",
+        type: "item",
+        actions: {
+            init: {
+                url: "/api/$action",
+                type: "GET",
+                params: ["$action_id"],
+                success: async function (result, action, subActionName) {
+                    console.log (["on success", result,, action, subActionName]);
+                    const model = await buildModelForType("$action");
+                    console.log(["model is", model])
+                    const survey = new Survey.Model(model);
+                    survey.data = result;
+                    $("#surveyContainer").Survey({ model: survey });
                 },
-                root : {
+                fail: function (xhr) {
+                    alert("Failed to get $action: " + xhr.responseText);
                 },
-                item: [{
-                        label: "Save",
-                        callback: function(rowItem) {
-                            console.log("Saving $action:", rowItem.item);
-                            postAction("/api/$action", rowItem.item);
-                        }
-                    }]
-            }
-        };
-    return buildTemplate( actionName, templateString);
-
+                custom: null
+            },
+            root: {},
+            item: [{
+                label: "Save",
+                callback: function (rowItem) {
+                    console.log("Saving $action:", rowItem.item);
+                    postAction("/api/$action", rowItem.item);
+                }
+            }]
+        }
+    };
+    return buildTemplate(actionName, templateString);
 }
+
 
 function buildListTemplate (actionName) {
     
@@ -286,9 +292,11 @@ function buildListTemplate (actionName) {
 
 function buildTemplate (actionName, templateString) {
 
+    istypeList = false;
     // if actionName ends with "s" then remove the last character
     if (actionName.endsWith("s")) {
         actionName = actionName.slice(0, -1);
+        istypeList = true;
     }
 
     var actionTemplateString = stringifyWithFn(templateString);
@@ -297,7 +305,11 @@ function buildTemplate (actionName, templateString) {
     actionInstance = parseWithFn(actionTemplateString);
 
     console.log("Action instance for " + actionName + ":", actionInstance);
-    return actionInstance[actionName + "s"];
+    if (istypeList == false) {
+        return actionInstance;
+    } else {
+        return actionInstance[actionName + "s"];
+    }
 
 }
 

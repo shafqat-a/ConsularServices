@@ -16,8 +16,13 @@ public class SecuredPage: PageModel
     }
     public HttpContext HttpContext => _httpContextAccessor.HttpContext;
     
-    public string GenerateItemPageHiddenIdString(string typeName)
+    public string GenerateItemPageHiddenIdString(string typeName = "")
     {
+        if (string.IsNullOrEmpty(typeName))
+        {
+            // Parameter not passed. Infer from action verb
+            typeName = GetActionWordFromRoute();
+        }
 
         // <input type="hidden" name="user_id" id="user_id" value="@ViewBag.UserId" />
 
@@ -36,7 +41,8 @@ public class SecuredPage: PageModel
         {
             PropertyInfo? prop = itemType.GetProperty(pk);
             ColumnAttribute? col = prop?.GetCustomAttribute<ColumnAttribute>();
-            var value =  HttpContext.Form[col.Name].ToString() ?? string.Empty;
+            var value =  HttpContext.Request.Form[col.Name].ToString() ?? string.Empty;
+            
             if (col != null)
             {
                 sb.Append($"<input type='hidden' name='{col.Name}' id='{col.Name}' value='{value}' />");
@@ -69,6 +75,16 @@ public class SecuredPage: PageModel
         }
 
         return typInput;
+    }
+    
+    public string GetActionWordFromRoute()
+    {
+        var routeData = HttpContext.GetRouteData();
+        if (routeData.Values.TryGetValue("action", out var action))
+        {
+            return action?.ToString() ?? string.Empty;
+        }
+        return string.Empty;
     }
     
 }

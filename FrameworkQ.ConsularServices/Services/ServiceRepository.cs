@@ -10,13 +10,13 @@ namespace FrameworkQ.ConsularServices.Services
 {
     public interface IServiceRepository
     {
-        ServiceInfo CreateServiceInfo(ServiceInfo service);
-        ServiceInfo GetServiceInfo(long id);
+        Service CreateServiceInfo(Service service);
+        Service GetServiceInfo(long id);
 
         
-        void UpdateServiceInfo(ServiceInfo service);
+        void UpdateServiceInfo(Service service);
         void DeleteServiceInfo(long id);
-        ServiceInfo[] ListServiceInfo();
+        Service[] ListServiceInfo();
         Token CreateToken(Token token);
         Token GetToken(string tokenId);
         void UpdateToken(Token token);
@@ -24,6 +24,7 @@ namespace FrameworkQ.ConsularServices.Services
 
         Station[] GetStations();
         Station GetStation(long id);
+        Station CreateStation(Station station);
     }
 
     public class ServiceRepository : IServiceRepository
@@ -45,7 +46,7 @@ namespace FrameworkQ.ConsularServices.Services
         /// </summary>
         /// <param name="service">The service info object to create.</param>
         /// <returns>The new service_id assigned by the database.</returns>
-        public ServiceInfo CreateServiceInfo(ServiceInfo service)
+        public Service CreateServiceInfo(Service service)
         {
             const string sql = @"
             INSERT INTO public.service_info (service_name, service_description, usual_service_days, service_fee) 
@@ -57,14 +58,14 @@ namespace FrameworkQ.ConsularServices.Services
             return service;
         }
 
-        public ServiceInfo GetServiceInfo(long id)
+        public Service GetServiceInfo(long id)
         {
             const string sql = "SELECT * FROM public.service_info WHERE service_id = @id;";
             using var conn = new NpgsqlConnection(_connectionString);
-            return conn.QueryFirstOrDefault<ServiceInfo>(sql, new { id });
+            return conn.QueryFirstOrDefault<Service>(sql, new { id });
         }
 
-        public void UpdateServiceInfo(ServiceInfo service)
+        public void UpdateServiceInfo(Service service)
         {
             const string sql = @"
                 UPDATE public.service_info 
@@ -163,16 +164,28 @@ namespace FrameworkQ.ConsularServices.Services
         }
         public Station GetStation(long id)
         {
-            const string sql = "SELECT * FROM public.queue WHERE queue_id = @id;";
+            const string sql = "SELECT * FROM public.station WHERE station_id = @id;";
             using var conn = new NpgsqlConnection(_connectionString);
             return conn.QueryFirstOrDefault<Station>(sql, new { id });
         }
 
-        public ServiceInfo[] ListServiceInfo()
+        public Service[] ListServiceInfo()
         {
             const string sql = "SELECT * FROM public.service_info;";
             using var conn = new NpgsqlConnection(_connectionString);
-            return conn.Query<ServiceInfo>(sql).ToArray();
+            return conn.Query<Service>(sql).ToArray();
+        }
+
+        public Station CreateStation(Station station)
+        {
+            const string sql = @"
+            INSERT INTO public.station ( station_name, queue_status) 
+            VALUES (@StationName, @Status)
+            RETURNING station_id;";
+
+            using var conn = new NpgsqlConnection(_connectionString);
+            station.StationId = conn.ExecuteScalar<long>(sql, station);
+            return station;
         }
         
     }

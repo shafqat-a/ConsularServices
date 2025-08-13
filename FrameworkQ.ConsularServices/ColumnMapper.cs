@@ -85,7 +85,7 @@ public class ColumnMapper<T> : EntityMap<T> where T : class
                 cfg.AddMap(new ColumnMapper<Permission>());
                 cfg.AddMap(new ColumnMapper<RolePermissionMap>());
                 cfg.AddMap(new ColumnMapper<RoleUserMap>());
-                cfg.AddMap(new ColumnMapper<ServiceInfo>());
+                cfg.AddMap(new ColumnMapper<Service>());
                 cfg.AddMap(new ColumnMapper<ServiceInstance>());
                 cfg.AddMap(new ColumnMapper<Station>());
                 cfg.AddMap(new ColumnMapper<Token>());

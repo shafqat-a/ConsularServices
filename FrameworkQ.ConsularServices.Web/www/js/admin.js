@@ -52,9 +52,9 @@ $(document).ready(function (){
                     url: '/api/user',
                     type: 'GET',
                     params: ["user_id"],
-                    success : function (result, action, subActionName) {
+                    success : async function (result, action, subActionName) {
                         
-                        var model =buildModelForType("user");
+                        var model = await buildModelForType("user");
                         var survey = new Survey.Model(model);
                         survey.data = result;
                         $("#surveyContainer").Survey({model: survey});
@@ -101,6 +101,37 @@ $(document).ready(function (){
                         }
                     }]
             }  
+        },
+        station: {
+            url: '/station',
+            type: "item",
+            actions: {
+                init: {
+                    url: '/api/station',
+                    type: 'GET',
+                    params: ["station_id"],
+                    success : async function (result, action, subActionName) {
+
+                        var model = await buildModelForType("station");
+                        var survey = new Survey.Model(model);
+                        survey.data = result;
+                        $("#surveyContainer").Survey({model: survey});
+                    },
+                    fail: function (xhr) {
+                        alert ("Failed to get station:", xhr.responseText);
+                    },
+                    custom: null
+                },
+                root : {
+                },
+                item: [{
+                    label: "Save",
+                    callback: function(rowItem) {
+                        console.log("Saving station:", rowItem.item);
+                        postAction("/api/station", rowItem.item);
+                    }
+                }]
+            }
         },
         services : buildListTemplate ("services"),
         service: buildItemTemplate ("service")
