@@ -98,7 +98,7 @@ public static class Utils
             elements[i] = new
             {
                 type = "text",
-                name = (p.Name),
+                name = (Camelize(p.Name)),
                 title = meta?.Title ?? Humanize(p.Name),
                 isRequired = meta?.IsRequired ?? false,
                 visible = meta?.IsVisible ?? true,

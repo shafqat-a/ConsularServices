@@ -5,6 +5,7 @@ namespace FrameworkQ.ConsularServices.Services;
 [ActionVerb( Verb = "station", PKs = new[] { "StationId" })]
 public class Station
 {
+    [MetaData(IsVisible =false)]
     [System.ComponentModel.DataAnnotations.Key]
     [Column("station_id")]
     public long StationId { get; set; }

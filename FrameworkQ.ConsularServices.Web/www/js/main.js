@@ -229,7 +229,7 @@ function buildItemTemplate(actionName) {
                 type: "GET",
                 params: ["$action_id"],
                 success: async function (result, action, subActionName) {
-                    console.log (["on success", result,, action, subActionName]);
+                    console.log (["on success", result, action, subActionName]);
                     const model = await buildModelForType("$action");
                     console.log(["model is", model])
                     const survey = new Survey.Model(model);

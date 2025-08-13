@@ -17,7 +17,7 @@ public class User
             ]; 
             break;
             */
-    
+    [MetaData(IsVisible =false)]
     [System.ComponentModel.DataAnnotations.Key]
     [Column("user_id")]
     public long UserId { get; set; }

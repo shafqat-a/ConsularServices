@@ -2,9 +2,10 @@
 
 namespace FrameworkQ.ConsularServices.Services;
 
-[ActionVerb( Verb = "service", PKs = new[] { "ServiceId" })]
+[ActionVerb(Verb = "service", PKs = new[] { "ServiceId" })]
 public class Service
 {
+    [MetaData(IsVisible =false)]
     [System.ComponentModel.DataAnnotations.Key]
     [Column("service_id")]
     public long ServiceId { get; set; }
