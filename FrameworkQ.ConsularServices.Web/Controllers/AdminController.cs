@@ -25,7 +25,7 @@ public class AdminController : Controller
     }
 
     [HttpPost("/user")]
-    public IActionResult User([FromForm(Name = "user_id")] string userId)
+    public IActionResult EditUser([FromForm(Name = "user_id")] string userId)
     {
         ViewBag.UserId = userId.ToString();
         return View();
@@ -41,5 +41,11 @@ public class AdminController : Controller
     public IActionResult Service()
     {
         return View("ItemView");
+    }
+
+    [HttpGet("/form-designer")]
+    public IActionResult FormDesigner()
+    {
+        return View("FormDesigner");
     }
 }

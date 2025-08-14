@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using FrameworkQ.ConsularServices.Services;
 using FrameworkQ.ConsularServices.Users;
+using FrameworkQ.ConsularServices.Forms;
 
 namespace FrameworkQ.ConsularServices.Data
 {
@@ -21,6 +22,8 @@ namespace FrameworkQ.ConsularServices.Data
         public DbSet<Token> Tokens { get; set; }
         public DbSet<StationLog> StationLogs { get; set; }
         public DbSet<ServiceInstance> ServiceInstances { get; set; }
+    public DbSet<FormDefinition> FormDefinitions { get; set; }
+    public DbSet<FormResponse> FormResponses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,6 +51,8 @@ namespace FrameworkQ.ConsularServices.Data
             modelBuilder.Entity<Token>().ToTable("token");
             modelBuilder.Entity<StationLog>().ToTable("station_log");
             modelBuilder.Entity<ServiceInstance>().ToTable("service_instance");
+            modelBuilder.Entity<FormDefinition>().ToTable("form_definition");
+            modelBuilder.Entity<FormResponse>().ToTable("form_response");
 
             // Configure DateTime properties for PostgreSQL UTC
             modelBuilder.Entity<Token>()
@@ -177,6 +182,21 @@ namespace FrameworkQ.ConsularServices.Data
             modelBuilder.Entity<ServiceInstance>()
                 .Property(si => si.ServiceInstanceId)
                 .UseIdentityAlwaysColumn();
+
+            modelBuilder.Entity<FormDefinition>()
+                .Property(fd => fd.FormDefinitionId)
+                .UseIdentityAlwaysColumn();
+
+            modelBuilder.Entity<FormResponse>()
+                .Property(fr => fr.FormResponseId)
+                .UseIdentityAlwaysColumn();
+
+            // Form relationships
+            modelBuilder.Entity<FormResponse>()
+                .HasOne(fr => fr.FormDefinition)
+                .WithMany()
+                .HasForeignKey(fr => fr.FormDefinitionId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure sequences for token generation
             modelBuilder.HasSequence<long>("sequence_seq", "public")
