@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace FrameworkQ.ConsularServices.Users;
@@ -18,19 +19,20 @@ public class User
             break;
             */
     [MetaData(IsVisible =false)]
-    [System.ComponentModel.DataAnnotations.Key]
+    [Key]
     [Column("user_id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long UserId { get; set; }
 
     [MetaData(Title = "Name", IsRequired = true, Description = "Please enter the user's name")]
     [Column("name")]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [MetaData(Title = "Email", IsRequired = true, Description = "Please enter the user's email address")]
     [Column("email")]
-    public string Email { get; set; }
+    public required string Email { get; set; }
 
     [MetaData(IsVisible = false)]
     [Column("password_hash")]
-    public string PasswordHash { get; set; }
+    public required string PasswordHash { get; set; }
 }

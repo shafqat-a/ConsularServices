@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services;
 
@@ -6,12 +7,13 @@ namespace FrameworkQ.ConsularServices.Services;
 public class Station
 {
     [MetaData(IsVisible =false)]
-    [System.ComponentModel.DataAnnotations.Key]
+    [Key]
     [Column("station_id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long StationId { get; set; }
 
     [Column("station_name")]
-    public string StationName { get; set; }
+    public required string StationName { get; set; }
 
     [Column("queue_status")]
     public int Status { get; set; }

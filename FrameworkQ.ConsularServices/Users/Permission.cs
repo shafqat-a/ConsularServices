@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
 
 namespace FrameworkQ.ConsularServices.Users;
 
 public class Permission
 {
-    [System.ComponentModel.DataAnnotations.Key]
+    [Key]
     [Column("permission_id")]
     public long PermissionID { get; set; }
 
     [Column("permission_name")]
-    public string PermissionName { get; set; }
+    public required string PermissionName { get; set; }
 
     public const long UPDATE_USER    = 02;
     public const long DELETE_USER    = 03;

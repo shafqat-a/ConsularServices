@@ -1,11 +1,13 @@
 namespace FrameworkQ.ConsularServices.Services;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class ServiceInstance
 {
-    [System.ComponentModel.DataAnnotations.Key]
+    [Key]
     [Column("service_instance_id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long ServiceInstanceId { get; set; }
     
     [Column("service_info_id")]
@@ -21,12 +23,12 @@ public class ServiceInstance
     public DateTime DeliveredAt { get; set; }
     
     [Column("note")]
-    public string Note { get; set; }
+    public string? Note { get; set; }
 
     [Column("attachments_received")]
-    public string[] AttachmentsRecieved { get; set; }
+    public string[]? AttachmentsRecieved { get; set; }
     
     [Column("token_id")]
-    public string TokenId { get; set; }
+    public required string TokenId { get; set; }
 
 }

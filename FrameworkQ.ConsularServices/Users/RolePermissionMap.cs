@@ -6,8 +6,8 @@ public class RolePermissionMap
 {
     
     [Column("role_id")]
-    public int RoleId { get; set; }
+    public long RoleId { get; set; }
 
     [Column("permission_id")]
-    public int PermissionId { get; set; }
+    public long PermissionId { get; set; }
 }

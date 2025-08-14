@@ -46,20 +46,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });     
 
 // In Program.cs or Startup.cs
-builder.Services.AddSingleton(sp => 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
 {
-    var configuration = sp.GetRequiredService<IConfiguration>();
-    var connectionString = configuration.GetConnectionString("DefaultConnection");
-    if (string.IsNullOrEmpty(connectionString))
-    {
-        throw new InvalidOperationException("Connection string 'DefaultConnection' not found in configuration.");
-    }
-    return connectionString;
-});
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found in configuration.");
+}
 
 // If you're using a repository pattern with dependency injection
-
-DependencyInjection.AddConsularServices(builder.Services);
+DependencyInjection.AddConsularServices(builder.Services, connectionString);
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 

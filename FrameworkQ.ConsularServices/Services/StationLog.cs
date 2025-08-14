@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services
@@ -6,8 +7,9 @@ namespace FrameworkQ.ConsularServices.Services
     [Table("station_log")]
     public class StationLog
     {
-        [System.ComponentModel.DataAnnotations.Key]
+        [Key]
         [Column("log_id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long LogId { get; set; }
 
         [Column("station_id")]

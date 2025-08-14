@@ -2,14 +2,18 @@
 using Microsoft.Extensions.DependencyInjection;
 using FrameworkQ.ConsularServices;
 using FrameworkQ.ConsularServices.Services;
+using Microsoft.EntityFrameworkCore;
+using FrameworkQ.ConsularServices.Data;
 
 namespace FrameworkQ.ConsularServices.Web
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddConsularServices(this IServiceCollection services)
+        public static IServiceCollection AddConsularServices(this IServiceCollection services, string connectionString)
         {
-           
+            // Add Entity Framework
+            services.AddDbContext<ConsularDbContext>(options =>
+                options.UseNpgsql(connectionString));
             
             services.AddTransient<Station>();
             services.AddTransient<Service>();
@@ -18,12 +22,11 @@ namespace FrameworkQ.ConsularServices.Web
             services.AddTransient<Role>();
             services.AddTransient<Permission>();
                 
-            // Register repositories
-            
-            services.AddSingleton<ConnectionProvider>();
+            // Register repositories with EF Core versions
+            services.AddSingleton<ConnectionProvider>(); // Keep for backward compatibility if needed
             services.AddScoped<TokenGenerator>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IUserRepository, UserRepositoryEF>();
+            services.AddScoped<IServiceRepository, ServiceRepositoryEF>();
             
             // Register the service manager
             services.AddScoped<IServiceManager, ServiceManager>();

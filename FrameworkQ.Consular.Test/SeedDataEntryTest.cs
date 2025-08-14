@@ -39,7 +39,6 @@ public class SeedDataEntryTest : IDisposable
                 services.AddSingleton<IConfiguration>(configuration);
                 
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
-                services.AddSingleton(connectionString);
                 string scriptPath = Path.Combine(Directory.GetCurrentDirectory(), "script.sql");
                 if (File.Exists(scriptPath))
                 {
@@ -48,7 +47,7 @@ public class SeedDataEntryTest : IDisposable
                     conn.Execute(script);
                 }
                     
-                DependencyInjection.AddConsularServices(services);
+                DependencyInjection.AddConsularServices(services, connectionString!);
             })
             .Build();
         ColumnMapper<User>.MapTypes();
@@ -59,10 +58,12 @@ public class SeedDataEntryTest : IDisposable
     [Fact]
     public void Setup_Should_Configure_Services()
     {
-        // Verify connection string is available
-        var connectionString = _serviceProvider.GetRequiredService<string?>();
-        Assert.NotNull(connectionString);
-        Assert.NotEmpty(connectionString);
+        // Verify services are registered
+        var userRepository = _serviceProvider.GetRequiredService<IUserRepository>();
+        Assert.NotNull(userRepository);
+        
+        var serviceRepository = _serviceProvider.GetRequiredService<IServiceRepository>();
+        Assert.NotNull(serviceRepository);
     }
 
     private string Base64ToHex (string inputb64)
@@ -195,10 +196,13 @@ public class SeedDataEntryTest : IDisposable
 
         var token = serviceRepository.CreateToken(new Token()
         {
+            TokenId = "temp", // This will be overridden by the repository
             Description = "Some Token",
             MobileNo = "000000000000", 
             Email = "shafqat@nuarca.com",
-            GeneratedAt = DateTime.Now,
+            GeneratedAt = DateTime.UtcNow,
+            AppointmentAt = DateTime.UtcNow.AddDays(1),
+            CompletedAt = DateTime.UtcNow.AddDays(2),
             ServiceType = new []{sinfo.ServiceId}
         });
 
