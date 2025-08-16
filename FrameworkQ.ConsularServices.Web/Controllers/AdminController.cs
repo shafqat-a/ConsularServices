@@ -25,7 +25,7 @@ public class AdminController : Controller
     }
 
     [HttpPost("/user")]
-    public IActionResult EditUser([FromForm(Name = "user_id")] string userId)
+    public IActionResult User([FromForm(Name = "user_id")] string userId)
     {
         ViewBag.UserId = userId.ToString();
         return View();

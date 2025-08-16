@@ -178,6 +178,7 @@ async function buildModelForType(objectType) {
     let obj = {};
 
     switch (objectType) {
+        /*
         case "user":
             obj.title = "User";
             obj.elements = [
@@ -195,6 +196,7 @@ async function buildModelForType(objectType) {
                 { type: "text", name: "Status", title: "Status", isRequired: true },
             ];
             break;
+            */
 
         default: {
             var objType = camelToProper(objectType)

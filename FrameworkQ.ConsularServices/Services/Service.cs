@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services;
 
-[ActionVerb(Verb = "service", PKs = new[] { "ServiceId" })]
+[EntityMeta(Verb = "service", PKs = new[] { "ServiceId" })]
 public class Service
 {
-    [MetaData(IsVisible = false)]
+    [PropertyMeta(IsVisible = false)]
     [Key]
     [Column("service_id")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

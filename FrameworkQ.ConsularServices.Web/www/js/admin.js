@@ -3,19 +3,15 @@
 $(document).ready(function (){
 
     var pageAction = window.location.pathname.split("/").pop();
-    
-    var enums = {
-        QueueStatus: {
-            Empty : 0,
-            Away : 1,
-            Waiting: 2,
-            InProgress: 3,
-            Completed: 4
-        }
-    }
 
     var pages = {
-        users :{
+        users : buildListTemplate("users"),
+        user: buildItemTemplate("user"),
+        stations: buildListTemplate("stations"),
+        station: buildItemTemplate("station"),
+        services : buildListTemplate ("services"),
+        service: buildItemTemplate ("service")
+        /* {
             url: '/users',
             type : 'list',
             actions : {
@@ -132,9 +128,8 @@ $(document).ready(function (){
                     }
                 }]
             }
-        },
-        services : buildListTemplate ("services"),
-        service: buildItemTemplate ("service")
+        },*/
+        
         
     };
 

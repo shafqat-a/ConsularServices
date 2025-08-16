@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text;
+using System.Dynamic;
 
 namespace FrameworkQ.ConsularServices.Web;
 
@@ -28,9 +29,9 @@ public static class Utils
         // <input type="hidden" name="user_id" id="user_id" value="@ViewBag.UserId" />
 
         Type itemType = GetTypeFromName(typeName);
-        ActionVerbAttribute? actionVerb =null;
+        EntityMetaAttribute? actionVerb =null;
         try{
-            actionVerb = itemType.GetCustomAttribute<ActionVerbAttribute>();
+            actionVerb = itemType.GetCustomAttribute<EntityMetaAttribute>();
         } catch (Exception ex){
             // Handle the exception (e.g., log it)
         }
@@ -75,42 +76,73 @@ public static class Utils
         return typInput;
     }
 
-    public static object BuildSurveyJsConfig(string typename)
+    public static object BuildSurveyJsConfig(string typeName)
     {
+        var t = Type.GetType(typeName) 
+                ?? throw new ArgumentException($"Type '{typeName}' not found.");
+        PropertyInfo[] props = t.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-        // 1. Gather the properties once
-        PropertyInfo[] props = Type.GetType(typename).GetProperties(
-                                   BindingFlags.Public | BindingFlags.Instance);
-
-        // 2. Pre-allocate the array
         object[] elements = new object[props.Length];
 
-        // 3. Fill the array with plain loops
         for (int i = 0; i < props.Length; i++)
         {
             PropertyInfo p = props[i];
 
-            // Attributes
+            // Attributes (as in your original)
             ColumnAttribute? col = GetAttribute<ColumnAttribute>(p);
-            MetaDataAttribute? meta = GetAttribute<MetaDataAttribute>(p);
+            PropertyMetaAttribute? meta = GetAttribute<PropertyMetaAttribute>(p);
 
-            // Build the element object
-            elements[i] = new
+            // Figure out the *actual* type (unwrap Nullable<T>)
+            Type actualType = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType;
+
+            // Start with a flexible object so we can add extra fields when it's an enum
+            dynamic el = new ExpandoObject();
+            var dict = (IDictionary<string, object?>)el;
+
+            dict["type"] = "text";
+            dict["name"] = Camelize(p.Name);
+            dict["title"] = meta?.Title ?? Humanize(p.Name);
+            dict["isRequired"] = meta?.IsRequired ?? false;
+            dict["visible"] = meta?.IsVisible ?? true;
+            dict["inputType"] = meta?.InputType; // you may keep or drop this for enums
+
+            // If enum (supports nullable enums too)
+            if (actualType.IsEnum)
             {
-                type = "text",
-                name = (Camelize(p.Name)),
-                title = meta?.Title ?? Humanize(p.Name),
-                isRequired = meta?.IsRequired ?? false,
-                visible = meta?.IsVisible ?? true,
-                inputType = meta?.InputType
-            };
+                dict["type"] = "dropdown"; // SurveyJS dropdown
+                // Build choices: [{ value, text }]
+                dict["choices"] = BuildChoicesFromEnum(actualType);
+
+                // Optional: if the property itself is nullable, you can show a 'None' item
+                // dict["showNoneItem"] = true;
+                // dict["noneText"] = "(None)";
+            }
+
+            elements[i] = el;
         }
 
-        // 4. Return the final shape
-        return new
+        return new { elements };
+    }
+
+    private static List<object> BuildChoicesFromEnum(Type enumType)
+    {
+        // values = underlying numeric array; iterate as enum to get names safely
+        var values = Enum.GetValues(enumType); // docs: GetValues returns all members’ values
+        var result = new List<object>(values.Length);
+
+        foreach (var v in values) // v is boxed enum value
         {
-            elements
-        };
+            string name = Enum.GetName(enumType, v)!; // display text (you can Humanize if desired)
+
+            // If you want numeric values in the JSON, convert to the enum’s underlying type:
+            // var numeric = Convert.ChangeType(v, Enum.GetUnderlyingType(enumType));
+            // If you prefer string values (names), set `value = name`.
+            var numeric = Convert.ChangeType(v, Enum.GetUnderlyingType(enumType)); // value as number
+
+            result.Add(new { value = numeric, text = name });
+        }
+
+        return result;
     }
 
      private static TAttr? GetAttribute<TAttr>(PropertyInfo prop) where TAttr : Attribute

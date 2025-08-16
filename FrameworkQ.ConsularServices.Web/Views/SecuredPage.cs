@@ -27,9 +27,9 @@ public class SecuredPage: PageModel
         // <input type="hidden" name="user_id" id="user_id" value="@ViewBag.UserId" />
 
         Type itemType = GetTypeFromName(typeName);
-        ActionVerbAttribute? actionVerb =null;
+        EntityMetaAttribute? actionVerb =null;
         try{
-            actionVerb = itemType.GetCustomAttribute<ActionVerbAttribute>();
+            actionVerb = itemType.GetCustomAttribute<EntityMetaAttribute>();
         } catch (Exception ex){
             // Handle the exception (e.g., log it)
         }

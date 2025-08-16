@@ -3,10 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services;
 
-[ActionVerb( Verb = "station", PKs = new[] { "StationId" })]
+[EntityMeta( Verb = "station", PKs = new[] { "StationId" })]
 public class Station
 {
-    [MetaData(IsVisible =false)]
+    public enum  QueueStatus : int
+    {
+            Empty = 0,
+            Away = 1,
+            Waiting= 2,
+            InProgress= 3,
+            Completed= 4
+    }
+
+    [PropertyMeta(IsVisible = false)]
     [Key]
     [Column("station_id")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,5 +25,5 @@ public class Station
     public required string StationName { get; set; }
 
     [Column("queue_status")]
-    public int Status { get; set; }
+    public QueueStatus Status { get; set; }
 }

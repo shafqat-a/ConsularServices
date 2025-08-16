@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Users;
 
-[ActionVerb( Verb = "user", PKs = new[] { "UserId" })]
+[EntityMeta(UrlStem = "user", Verb = "user", PKs = new[] { "UserId" })]
 public class User
 {
     /*
@@ -18,21 +18,21 @@ public class User
             ]; 
             break;
             */
-    [MetaData(IsVisible =false)]
+    [PropertyMeta(IsVisible =false)]
     [Key]
     [Column("user_id")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long UserId { get; set; }
 
-    [MetaData(Title = "Name", IsRequired = true, Description = "Please enter the user's name")]
+    [PropertyMeta(Title = "Name", IsRequired = true, Description = "Please enter the user's name")]
     [Column("name")]
     public required string Name { get; set; }
 
-    [MetaData(Title = "Email", IsRequired = true, Description = "Please enter the user's email address")]
+    [PropertyMeta(Title = "Email", IsRequired = true, Description = "Please enter the user's email address")]
     [Column("email")]
     public required string Email { get; set; }
 
-    [MetaData(IsVisible = false)]
+    [PropertyMeta(IsVisible = false)]
     [Column("password_hash")]
     public required string PasswordHash { get; set; }
 }
