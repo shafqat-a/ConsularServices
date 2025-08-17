@@ -3,19 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FrameworkQ.ConsularServices.Web.Controllers;
 
+//[WebControllerActionInterruptFilter]
+//[ServiceFilter(typeof(WebControllerActionInterruptFilter))]
 public class AdminController : Controller
 {
 
     [HttpGet("/users")]
     public IActionResult Users()
     {
-        return View();
+        return View("ListView");
     }
 
     [HttpGet("/stations")]
     public IActionResult Stations()
     {
-        return View();
+        return View("ListView");
     }
 
     [HttpPost("/station")]
@@ -27,16 +29,15 @@ public class AdminController : Controller
     [HttpPost("/user")]
     public IActionResult User([FromForm(Name = "user_id")] string userId)
     {
-        ViewBag.UserId = userId.ToString();
-        return View();
+        return View("ItemView");
     }
-    
+
     [HttpGet("/services")]
     public IActionResult Services()
     {
         return View("ListView");
     }
-    
+
     [HttpPost("/service")]
     public IActionResult Service()
     {

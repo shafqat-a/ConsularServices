@@ -18,6 +18,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
         var jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
+        if (jwt == null || string.IsNullOrWhiteSpace(jwt.Key))
+        {
+            throw new InvalidOperationException("Jwt configuration missing or invalid (Key).");
+        }
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -55,6 +59,8 @@ if (string.IsNullOrEmpty(connectionString))
 // If you're using a repository pattern with dependency injection
 DependencyInjection.AddConsularServices(builder.Services, connectionString);
 builder.Services.AddHttpContextAccessor();
+// builder.Services.AddScoped<WebControllerActionInterruptFilter>();
+
 var app = builder.Build();
 
 // 2. Configure the app to use static files and routing
@@ -72,6 +78,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Custom middleware to log controller/action hits and misses
+app.UseControllerHandlerLogging();
 
 // 3. Map the Razor Pages. This will look for an Index.cshtml file.
 //    We can remove the old "Hello World" endpoint.

@@ -7,7 +7,8 @@ namespace FrameworkQ.ConsularServices
     public sealed class EntityMetaAttribute : Attribute
     {
         public string? UrlStem { get; set; }
-        public string Verb { get; init;}
+        public string? UrlStemList { get; set; }
+        public string Verb { get; init; }
         public string[] PKs { get; init;}
 
      
