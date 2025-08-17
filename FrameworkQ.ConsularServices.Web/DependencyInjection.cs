@@ -29,7 +29,9 @@ namespace FrameworkQ.ConsularServices.Web
             services.AddScoped<IServiceRepository, ServiceRepositoryEF>();
             
             // Register the service manager
-            services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IServiceManager, GeneralServiceManager>();
+            services.AddScoped<IManager<User>, UserManager>();
+            services.AddScoped<IManager<Service>, ServiceManager>();
 
             return services;
         }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services;
 
-[EntityMeta(Verb = "service", PKs = new[] { "ServiceId" })]
+[EntityMeta (UrlStem = "service", UrlStemList = "services", Verb = "service", PKs = new[] { "ServiceId" })]
 public class Service
 {
     [PropertyMeta(IsVisible = false)]

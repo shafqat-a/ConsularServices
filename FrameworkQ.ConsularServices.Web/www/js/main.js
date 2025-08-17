@@ -111,6 +111,7 @@ function jqCreateTable ( parent_div_id,  table_id, data, columns, actions){
                     .addClass("btn")
                     .on("click", function() {
                         var rowItem = { "item": item  };
+                        console.log(["----------", item, action])
                         action.callback(rowItem);
                     });
                 actionCell.append(actionButton);
@@ -178,25 +179,7 @@ async function buildModelForType(objectType) {
     let obj = {};
 
     switch (objectType) {
-        /*
-        case "user":
-            obj.title = "User";
-            obj.elements = [
-                { type: "text", name: "email", title: "Please type in your email", isRequired: true },
-                { type: "text", name: "password", title: "Please enter your password", isRequired: true, inputType: "password" },
-                { type: "text", name: "userId", visible: false },
-                { type: "text", name: "passwordHash", visible: false },
-            ];
-            break;
 
-        case "station":
-            obj.title = "Station";
-            obj.elements = [
-                { type: "text", name: "stationName", title: "Station Name", isRequired: true },
-                { type: "text", name: "Status", title: "Status", isRequired: true },
-            ];
-            break;
-            */
 
         default: {
             var objType = camelToProper(objectType)
@@ -282,6 +265,8 @@ function buildListTemplate (actionName) {
                 item: [{
                         label: "Edit",
                         callback: function(rowItem) {
+                            console.log(JSON.stringify(rowItem.item));
+                            console.log( ["++++", rowItem.item, "$action_id"], camelCase("$action_id"), rowItem.item[camelCase("$action_id")] );
                             postAction("/$action" , {"$action_id" : rowItem.item[camelCase("$action_id")].toString()});
                         }
                     }]

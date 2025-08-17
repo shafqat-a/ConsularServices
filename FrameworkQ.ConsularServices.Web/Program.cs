@@ -60,6 +60,7 @@ if (string.IsNullOrEmpty(connectionString))
 DependencyInjection.AddConsularServices(builder.Services, connectionString);
 builder.Services.AddHttpContextAccessor();
 // builder.Services.AddScoped<WebControllerActionInterruptFilter>();
+builder.Services.AddControllerHandler("/api");
 
 var app = builder.Build();
 

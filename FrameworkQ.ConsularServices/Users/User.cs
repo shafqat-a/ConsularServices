@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Users;
 
-[EntityMeta(UrlStem = "user", UrlStemList = "users", Verb = "user", PKs = new[] { "UserId" })]
+[EntityMeta (UrlStem = "user", UrlStemList = "users", Verb = "user", PKs = new[] { "UserId" })]
 public class User
 {
     /*

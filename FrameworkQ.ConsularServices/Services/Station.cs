@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FrameworkQ.ConsularServices.Services;
 
-[EntityMeta( Verb = "station", PKs = new[] { "StationId" })]
+[EntityMeta(UrlStem = "station", UrlStemList = "stations", Verb = "station", PKs = new[] { "StationId" })]
 public class Station
 {
     public enum  QueueStatus : int

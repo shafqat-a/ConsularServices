@@ -1,11 +1,12 @@
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FrameworkQ.ConsularServices
 {
     public enum ActionTypes
     {
         Create,
-        Read,
+        Get,
         Update,
         Delete,
         List,
@@ -18,8 +19,11 @@ namespace FrameworkQ.ConsularServices
         public string HttpMethod { get; set; }
         public ActionTypes ActionType { get; set; }
 
-        public string? CustomAction { get; set; }    
+        public string? CustomAction { get; set; }
         public Type EntityType { get; set; }    
+        public Type ManagerType { get; set; }
+        
+        
 
     }
 }

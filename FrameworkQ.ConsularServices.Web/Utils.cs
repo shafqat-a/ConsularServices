@@ -145,7 +145,7 @@ public static class Utils
         return result;
     }
 
-     private static TAttr? GetAttribute<TAttr>(PropertyInfo prop) where TAttr : Attribute
+    private static TAttr? GetAttribute<TAttr>(PropertyInfo prop) where TAttr : Attribute
     {
         object[] attrs = prop.GetCustomAttributes(typeof(TAttr), inherit: false);
         return attrs.Length > 0 ? (TAttr)attrs[0] : null;
